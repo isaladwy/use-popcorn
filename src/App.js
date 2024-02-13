@@ -32,7 +32,7 @@ const tempWatchedData = [
     Year: '2010',
     Poster:
       'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg',
-    runtime: 148,
+    Runtime: 148,
     imdbRating: 8.8,
     userRating: 10,
   },
@@ -42,7 +42,7 @@ const tempWatchedData = [
     Year: '1985',
     Poster:
       'https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg',
-    runtime: 116,
+    Runtime: 116,
     imdbRating: 8.5,
     userRating: 9,
   },
@@ -308,7 +308,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       Year,
       Poster,
       imdbRating: Number(imdbRating),
-      // Runtime: Number(Runtime.split(' ').at(0)),
+      Runtime: Number(Runtime.split(' ').at(0)),
       userRating,
     };
     // console.log('Added')
@@ -321,7 +321,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       async function getMovieDetails() {
         setIsLoading(true);
         let res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${selectedId}`
+          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
         );
         let data = await res.json();
         setMovie(data);
@@ -337,6 +337,10 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     function () {
       if (!Title) return;
       document.title = `Movie | ${Title}`;
+
+      return function () {
+        document.title = 'usePopcorn';
+      };
     },
     [Title]
   );
@@ -400,7 +404,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const avgRuntime = average(watched.map((movie) => movie.Runtime));
 
   return (
     <div className="summary">
@@ -457,7 +461,7 @@ function WatchedMovie({ movie, onDeleteWatched }) {
         </p>
         <p>
           <span>⏳</span>
-          <span>{movie.runtime} min</span>
+          <span>{movie.Runtime} min</span>
         </p>
 
         <button
